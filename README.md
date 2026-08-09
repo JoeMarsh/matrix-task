@@ -2,6 +2,12 @@
 
 `matrix-task` is a Codex skill for completing complex software tickets thoroughly instead of stopping at a partial checkpoint.
 
+## The problem it solves
+
+Coding agents can implement the obvious or happy-path parts of a ticket, reach a useful checkpoint—perhaps 80% complete—and then report the task as finished. Less-visible requirements, other actors or controllers, architectural invariants, edge cases, and tests may still be missing.
+
+`matrix-task` is designed to prevent this by turning the entire ticket into an auditable checklist before implementation begins. If requirements remain incomplete and there is no true hard blocker, the agent must re-plan and continue rather than treating partial progress as completion.
+
 It guides Codex to:
 
 - Build a requirements matrix before changing code.
