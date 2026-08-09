@@ -10,6 +10,24 @@ It guides Codex to:
 - Use new agents for clean-context reviews.
 - Finish with evidence, limitations, and follow-up work.
 
+## How the requirements matrix works
+
+Before writing code, Codex reads the full ticket and creates one matrix row for every requirement, acceptance criterion, invariant, test, and explicit non-goal. Each row records:
+
+- What the ticket requires.
+- Whether the current code already satisfies it.
+- Which actors, controllers, files, or symbols it affects.
+- Exactly how completion will be proved, such as a test or assertion.
+
+Every incomplete row is clearly marked. As Codex implements the ticket, it updates the matrix after each significant slice and identifies the highest-risk remaining gap.
+
+The task cannot be marked done until every row is either:
+
+1. Fully satisfied and proven with evidence; or
+2. Explicitly marked out of scope with a ticket reference.
+
+This makes the matrix a completion checklist for the entire ticket, not just the main or happy-path behavior.
+
 ## Install
 
 Give Codex this prompt:
