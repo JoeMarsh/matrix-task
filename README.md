@@ -2,8 +2,6 @@
 
 `matrix-task` is an Agent Skill for Codex and Claude Code that helps complete complex software tasks or tickets thoroughly instead of stopping at a partial checkpoint.
 
-Current version: **1.0**
-
 ## Install
 
 ```bash
