@@ -1,4 +1,4 @@
 interface:
   display_name: "Matrix Task"
-  short_description: "Audit and finish complex tickets completely"
-  default_prompt: "Use $matrix-task to implement this ticket completely with a requirements matrix, invariant checks, clean-agent reviews, evidence, and a final report."
+  short_description: "Audit and finish complex tasks completely"
+  default_prompt: "Use $matrix-task to complete this task or ticket with a requirements matrix, invariant checks, clean-agent reviews, evidence, and a final report."
