@@ -7,7 +7,7 @@ description: Complete complex software tasks or tickets with a requirements matr
 
 You are working on a complex software task or ticket (the work item). Your highest priority is completeness and faithfulness to every requirement, not speed or elegance.
 
-Work fully autonomously to the end of the work item. Produce clear intermediate artifacts (matrix, gap list, self-checks, review notes) so a human can later inspect what happened. At the very end, list any remaining issues, limitations, or recommended follow-up work.
+Work fully autonomously to the end of the work item. Produce clear intermediate artifacts (requirements matrix, review budget matrix, gap list, self-checks, review notes) so a human can later inspect what happened. At the very end, list any remaining issues, limitations, or recommended follow-up work.
 
 Only stop early if you hit a true hard blocker. Examples of hard blockers:
 
@@ -39,11 +39,25 @@ Mark every incomplete item explicitly. Do not write implementation code until th
 
 Extract and list every hard architectural or behavioural invariant from the work item. Treat any violation of these invariants as a P0 defect, even if the happy path works.
 
+## Review Budget Matrix
+
+During Phase 1, before implementation, define the significant slices and create this table:
+
+| Review ID | Type (slice / final) | Planned scope and Requirements Matrix rows | Significance justification | Trigger | Status (planned / used) |
+|---|---|---|---|---|---|
+
+- Include exactly one review row for each significant slice and exactly one final-review row.
+- Use the fewest significant slices practical. Each slice must deliver a coherent, independently testable group of requirements or cross a genuine architectural boundary.
+- Individual files, commits, small fixes, tests, review fixes, and incidental refactors are not significant slices on their own. Do not split or relabel work to increase the review budget.
+- Freeze the Review Budget Matrix before implementation. Compaction, resumed work, review findings, fixes, severity, or reclassification must not add review rows or reset used rows.
+- After any compaction or resume, restate the matrix and its used/remaining statuses before continuing.
+- Absorb newly discovered work into an existing planned slice or the final scope. Do not create a new review slot.
+
 ## Phased Execution
 
-Phase 1: Complete the audit (matrix + prioritized gap list).
+Phase 1: Complete the audit (Requirements Matrix + critical invariants + prioritized gap list + frozen Review Budget Matrix).
 
-Phase 2: Implement the incomplete rows, preferably in small reviewable slices.
+Phase 2: Implement the incomplete rows within the frozen significant slices. Make small reviewable code changes inside a slice without treating them as additional slices or reviews.
 
 After every non-trivial change or slice, re-check the matrix and record:
 
@@ -58,6 +72,7 @@ Continue until the Definition of Done is met or you hit a true hard blocker.
 The work item is not done until:
 
 - Every row in the Requirements Matrix is either fully satisfied and proven or explicitly marked out of scope with a reference or justification.
+- Every row in the Review Budget Matrix is marked used exactly once, and no unplanned review was performed.
 - All critical invariants still hold.
 - The acceptance criteria in the original work item are met with evidence (tests, digests, or clear reasoning).
 - You have listed any remaining known limitations or follow-up work.
@@ -71,17 +86,17 @@ The work item is not done until:
 
 ## Review
 
-- Break work into reviewable slices wherever practical.
-- After each significant slice, perform exactly one clean-context review of the changes using one new agent. At the end, perform exactly one final clean-context review using one new agent.
+- Use only the significant slices frozen in the Review Budget Matrix; smaller implementation changes remain inside those slices.
+- Execute only the reviews predeclared in the frozen Review Budget Matrix. After each significant slice, perform its one clean-context review using one new agent. At the end, perform the one final clean-context review using one new agent.
 - Fix issues found by a review, but do not review those fixes again. Review fixes remain part of the original slice and must not be renamed, split, or reclassified as a new slice to trigger another review.
-- These are hard review limits. Never perform a second review of the same slice or a second final review, regardless of the findings. No exceptions or workaround review loops.
+- Mark each review row used immediately after it runs. These are hard review limits: never add a row, reset a used row, perform a second review of the same slice, or perform a second final review. No exceptions or workaround review loops.
 
 ## Final Report
 
 When finished, or when stopped by a hard blocker, output:
 
 - Summary of what was implemented.
-- Updated Requirements Matrix with final status.
+- Updated Requirements Matrix and Review Budget Matrix with final status.
 - Any deviations from the original work-item approach.
 - Remaining issues, limitations, or recommended follow-up work.
 - Evidence that acceptance criteria and invariants hold, or a clear statement of why they cannot yet.

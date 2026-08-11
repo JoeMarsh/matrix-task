@@ -36,8 +36,8 @@ It guides the agent to:
 
 - Build a requirements matrix before changing code.
 - Identify critical invariants and remaining gaps.
-- Implement the work in reviewable slices.
-- Use exactly one new-agent review per significant slice and one final review.
+- Implement the work within substantial, preplanned slices.
+- Pre-plan a fixed review budget using the fewest substantial, independently testable slices practical, with one new-agent review per slice and one final review.
 - Finish with evidence, limitations, and follow-up work.
 
 ## How the requirements matrix works
@@ -57,6 +57,8 @@ The task cannot be marked done until every row is either:
 2. Explicitly marked out of scope with a reference or justification.
 
 This makes the matrix a completion checklist for the entire task or ticket, not just the main or happy-path behavior.
+
+Before implementation, the agent also freezes a Review Budget Matrix listing every significant slice review plus the final review. Compaction, fixes, or reclassifying work cannot create additional review slots.
 
 ## Compatibility
 
