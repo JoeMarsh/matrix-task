@@ -32,12 +32,15 @@ Coding agents can implement the obvious or happy-path parts of a task, reach a u
 
 `matrix-task` is designed to prevent this by turning the entire task or ticket into an auditable checklist before implementation begins. If requirements remain incomplete and there is no true hard blocker, the agent must re-plan and continue rather than treating partial progress as completion.
 
+A hard blocker means no meaningful progress remains after investigation and safe alternatives. Partial or deferrable issues are completed around and reported at the end instead of stopping the task early.
+
 It guides the agent to:
 
 - Build a requirements matrix before changing code.
 - Identify critical invariants and remaining gaps.
 - Implement the work within substantial, preplanned slices.
 - Pre-plan a fixed review budget using the fewest substantial, independently testable slices practical, with one new-agent review per slice and one final review.
+- Use one conditional blocker-challenge agent before the first proposed early stop.
 - Finish with evidence, limitations, and follow-up work.
 
 ## How the requirements matrix works
@@ -58,7 +61,7 @@ The task cannot be marked done until every row is either:
 
 This makes the matrix a completion checklist for the entire task or ticket, not just the main or happy-path behavior.
 
-Before implementation, the agent also freezes a Review Budget Matrix listing every significant slice review plus the final review. Compaction, fixes, or reclassifying work cannot create additional review slots.
+Before implementation, the agent also freezes a Review Budget Ledger listing every significant slice review, the final review, and one conditional blocker challenge. Compaction, fixes, or reclassifying work cannot create additional slots.
 
 ## Compatibility
 

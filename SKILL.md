@@ -1,105 +1,107 @@
 ---
 name: matrix-task
-description: Complete complex software tasks or tickets with a requirements matrix, critical-invariant checks, phased implementation, clean-agent review, and evidence. Use when completeness and faithfulness to a substantial work item matter more than speed or elegance.
+description: Complete substantial software tasks or tickets with a requirements matrix, review-budget ledger, invariant checks, phased implementation, bounded clean-agent reviews, a blocker challenge, and evidence. Use when completeness and faithfulness matter more than speed or elegance.
 ---
 
 # Matrix Task
 
-You are working on a complex software task or ticket (the work item). Your highest priority is completeness and faithfulness to every requirement, not speed or elegance.
+Complete the task or ticket (the work item) autonomously. Prioritize completeness and faithfulness to every requirement over speed or elegance. Maintain auditable artifacts: Requirements Matrix, Review Budget Ledger, prioritized gap list, self-checks, and review notes.
 
-Work fully autonomously to the end of the work item. Produce clear intermediate artifacts (requirements matrix, review budget matrix, gap list, self-checks, review notes) so a human can later inspect what happened. At the very end, list any remaining issues, limitations, or recommended follow-up work.
+Stop early only for a true hard blocker. A blocker is hard only when, after the audit, investigation, and safe in-scope alternatives, no meaningful progress remains on any incomplete requirement. Complete every unaffected row before stopping.
 
-Only stop early if you hit a true hard blocker. Examples of hard blockers:
+- Every remaining incomplete row depends on an unavailable task, system, or dependency.
+- A core requirement is contradictory, nonsensical, or impossible to satisfy with the current codebase and available information.
+- Information required for every remaining row cannot be inferred or safely assumed from the work item and codebase.
 
-- The work item depends on another task or ticket that is not yet done and whose absence makes correct implementation impossible.
-- After the audit, a core requirement is contradictory, nonsensical, or impossible to satisfy with the current codebase and available information.
-- Critical information is missing that cannot be inferred or safely assumed from the work item and codebase.
+Ambiguity, difficulty, risk, underestimated scope, turn limits, noncritical failures, or anything that can be safely assumed, isolated, deferred, or reported as a limitation or follow-up is not a blocker. Record it and continue. Before the first proposed stop, run the one Blocker Challenge below. If blocked, explain why, list completed work, and state exactly what is needed to unblock.
 
-Underestimating the remaining scope or reaching a useful checkpoint is not a hard blocker; re-plan and continue implementing.
+## Work Item Interpretation
 
-If you hit a hard blocker, stop, explain it clearly, list what you have already completed, and state exactly what is needed to unblock.
-
-## Work Item Interpretation Rule
-
-- A task or ticket expresses intent and an acceptance bar, not a rigid specification.
-- Always investigate the current code before designing or implementing.
-- If you discover a clearly better design or implementation that still fully satisfies the acceptance criteria and all critical invariants, prefer it.
-- When you deviate from the written approach, explicitly note the deviation, the reason, and how the acceptance bar is still met.
+- Treat the work item as intent and an acceptance bar, not a rigid specification.
+- Inspect the current code before designing or implementing.
+- Prefer a clearly better solution when it still satisfies all acceptance criteria and critical invariants.
+- Report deviations from the written approach, their reasons, and how the acceptance bar remains met.
 
 ## Requirements Matrix
 
-Do this first, before any code. Create a table with these columns:
+Before writing code, create:
 
-| Requirement (quote or paraphrase the exact work-item text) | Category (functional / architectural invariant / conservation / test / non-goal) | Status in current codebase (exists / partial / missing / diverges) | Must remain true for all relevant actors/controllers? (yes/no + note) | Files / symbols that must change | How we will prove it (test name, assertion, or manual check) |
+| Requirement (quote or paraphrase the work item) | Category (functional / architectural invariant / conservation / test / non-goal) | Current status (exists / partial / missing / diverges) | Must remain true for all relevant actors/controllers? (yes/no + note) | Files / symbols to change | Proof (test, assertion, or manual check) |
 |---|---|---|---|---|---|
 
-Mark every incomplete item explicitly. Do not write implementation code until the matrix is complete.
+Mark every incomplete row. Do not implement until the matrix is complete.
 
 ## Critical Invariants
 
-Extract and list every hard architectural or behavioural invariant from the work item. Treat any violation of these invariants as a P0 defect, even if the happy path works.
+Extract every hard architectural or behavioural invariant from the work item. Treat any violation as a P0 defect, even when the happy path works.
 
-## Review Budget Matrix
+## Review Budget Ledger
 
-During Phase 1, before implementation, define the significant slices and create this table:
+During Phase 1, before implementation, define the significant slices and create:
 
-| Review ID | Type (slice / final) | Planned scope and Requirements Matrix rows | Significance justification | Trigger | Status (planned / used) |
+| Slot ID | Type (slice review / final review / blocker challenge) | Scope and Requirements Matrix rows | Significance justification | Trigger | Status (planned / used / not needed) |
 |---|---|---|---|---|---|
 
-- Include exactly one review row for each significant slice and exactly one final-review row.
-- Use the fewest significant slices practical. Each slice must deliver a coherent, independently testable group of requirements or cross a genuine architectural boundary.
-- Individual files, commits, small fixes, tests, review fixes, and incidental refactors are not significant slices on their own. Do not split or relabel work to increase the review budget.
-- Freeze the Review Budget Matrix before implementation. Compaction, resumed work, review findings, fixes, severity, or reclassification must not add review rows or reset used rows.
-- After any compaction or resume, restate the matrix and its used/remaining statuses before continuing.
-- Absorb newly discovered work into an existing planned slice or the final scope. Do not create a new review slot.
+- The frozen rows are the entire review-and-challenge budget: exactly one per significant slice, one final-review row, and one conditional blocker-challenge row.
+- Use the fewest significant slices practical. Each must deliver a coherent, independently testable requirement group or cross a genuine architectural boundary.
+- Individual files, commits, small fixes, tests, review fixes, and incidental refactors are not slices by themselves. Never split or relabel work to increase reviews.
+- Freeze the Review Budget Ledger before implementation. Compaction, resumed work, findings, fixes, severity, or reclassification cannot add rows or reset used rows.
+- After compaction or resume, restate the ledger and used/remaining statuses before continuing.
+- Absorb newly discovered work into an existing slice or final scope; do not add a review slot.
+
+## Blocker Challenge
+
+- Immediately before the first proposed hard-blocker stop, use the one blocker-challenge slot with a new clean-context agent. Give it the work item, Requirements Matrix, Review Budget Ledger, current code and evidence, incomplete rows, attempted paths, safe assumptions considered, and exact proposed blocker.
+- Instruct it to try to disprove the blocker by finding a safe assumption, alternative implementation, or meaningful partial path. This is a blocker challenge, not a broad code review.
+- If it finds any viable path, mark the slot used and continue. Stop only if it finds no meaningful path and the hard-blocker test above still holds.
+- Use the slot at most once; never reset it or add another. If no blocker is proposed, mark it not needed in the Final Report.
 
 ## Phased Execution
 
-Phase 1: Complete the audit (Requirements Matrix + critical invariants + prioritized gap list + frozen Review Budget Matrix).
+1. Audit: complete the Requirements Matrix, critical invariants, prioritized gap list, and frozen Review Budget Ledger.
+2. Implement incomplete rows within the frozen slices. Small reviewable code changes remain inside their slice and do not create reviews.
 
-Phase 2: Implement the incomplete rows within the frozen significant slices. Make small reviewable code changes inside a slice without treating them as additional slices or reviews.
+After every non-trivial change or slice, update the Requirements Matrix and record:
 
-After every non-trivial change or slice, re-check the matrix and record:
+- Requirements now fully satisfied.
+- Requirements still partial or untested.
+- The single highest-risk remaining gap.
 
-- Which requirements are now fully satisfied?
-- Which are still partial or untested?
-- What is the single highest-risk remaining gap?
-
-Continue until the Definition of Done is met or you hit a true hard blocker.
+Continue until the Definition of Done is met or a true hard blocker occurs.
 
 ## Definition of Done
 
-The work item is not done until:
+The work item is done only when:
 
-- Every row in the Requirements Matrix is either fully satisfied and proven or explicitly marked out of scope with a reference or justification.
-- Every row in the Review Budget Matrix is marked used exactly once, and no unplanned review was performed.
-- All critical invariants still hold.
-- The acceptance criteria in the original work item are met with evidence (tests, digests, or clear reasoning).
-- You have listed any remaining known limitations or follow-up work.
+- Every Requirements Matrix row is satisfied and proven, or out of scope with a reference or justification.
+- Every slice/final review row was used exactly once; the blocker-challenge row is used before a proposed stop or marked not needed. No unplanned review or challenge occurred.
+- All critical invariants hold.
+- Acceptance criteria are met with tests, digests, or clear reasoning.
+- Remaining limitations and follow-up work are listed.
 
 ## Self-Check Rules
 
-- Never assume a special-case path is acceptable just because it currently exists.
-- Any time you create or keep a divergent code path for different actors/controllers, stop and justify why the shared authority cannot handle it.
-- Prefer small, reviewable changes that close matrix rows over large rewrites, unless a rewrite is clearly the cleaner or more correct path. When choosing a rewrite, explicitly justify why it better satisfies the invariants and acceptance bar.
-- If you notice yourself implementing a convenient shortcut that the work item forbids, stop and flag it.
+- Never accept a special-case path merely because it exists.
+- When creating or keeping a divergent actor/controller path, stop and justify why shared authority cannot handle it.
+- Prefer small changes that close matrix rows. Rewrite only when clearly cleaner or more correct; explain why it better satisfies the invariants and acceptance bar.
+- Stop and flag any shortcut forbidden by the work item.
 
 ## Review
 
-- Use only the significant slices frozen in the Review Budget Matrix; smaller implementation changes remain inside those slices.
-- Execute only the reviews predeclared in the frozen Review Budget Matrix. After each significant slice, perform its one clean-context review using one new agent. At the end, perform the one final clean-context review using one new agent.
-- Fix issues found by a review, but do not review those fixes again. Review fixes remain part of the original slice and must not be renamed, split, or reclassified as a new slice to trigger another review.
-- Mark each review row used immediately after it runs. These are hard review limits: never add a row, reset a used row, perform a second review of the same slice, or perform a second final review. No exceptions or workaround review loops.
+- Use only frozen slices; smaller changes remain inside them.
+- Run only predeclared reviews: one clean-context review by one new agent after each slice, then one final clean-context review by one new agent.
+- Fix findings without re-review. Fixes remain in the original slice; never rename, split, or reclassify them to trigger another review.
+- Mark each row used immediately. Never add or reset a row, repeat a slice review, or repeat the final review. No exceptions or workarounds.
 
 ## Final Report
 
-When finished, or when stopped by a hard blocker, output:
+On completion or a hard blocker, report:
 
-- Summary of what was implemented.
-- Updated Requirements Matrix and Review Budget Matrix with final status.
-- Any deviations from the original work-item approach.
-- Remaining issues, limitations, or recommended follow-up work.
-- Evidence that acceptance criteria and invariants hold, or a clear statement of why they cannot yet.
-- If stopped by a hard blocker: exact description of the blocker and what is required to unblock.
+- Implementation summary.
+- Final Requirements Matrix and Review Budget Ledger.
+- Deviations from the written approach.
+- Remaining issues, limitations, or follow-up work.
+- Evidence that acceptance criteria and invariants hold, or why they cannot.
+- For a blocker, its exact cause and what is needed to unblock.
 
-Start now with the Requirements Matrix for the task or ticket below.
+Start with the Requirements Matrix for the task or ticket below.
