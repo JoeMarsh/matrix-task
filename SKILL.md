@@ -72,8 +72,9 @@ The work item is not done until:
 ## Review
 
 - Break work into reviewable slices wherever practical.
-- After each significant slice (and once at the end), perform a clean-context review of the changes using a new agent.
-- Fix issues found in the reviews. Do only one additional clean-context agent review pass using a second new agent if the first review surfaces multiple P0/P1 problems; otherwise stop after the single clean-context review + fixes.
+- After each significant slice, perform exactly one clean-context review of the changes using one new agent. At the end, perform exactly one final clean-context review using one new agent.
+- Fix issues found by a review, but do not review those fixes again. Review fixes remain part of the original slice and must not be renamed, split, or reclassified as a new slice to trigger another review.
+- These are hard review limits. Never perform a second review of the same slice or a second final review, regardless of the findings. No exceptions or workaround review loops.
 
 ## Final Report
 

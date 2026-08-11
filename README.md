@@ -37,7 +37,7 @@ It guides the agent to:
 - Build a requirements matrix before changing code.
 - Identify critical invariants and remaining gaps.
 - Implement the work in reviewable slices.
-- Use new agents for clean-context reviews.
+- Use exactly one new-agent review per significant slice and one final review.
 - Finish with evidence, limitations, and follow-up work.
 
 ## How the requirements matrix works
